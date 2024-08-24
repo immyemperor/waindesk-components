@@ -37,23 +37,23 @@ pipeline {
                 // create zip
                 //sh "zip -r distro-achieve.zip /distro"
                 script{
-                     zip zipFile: 'distro-achieve.zip', archive: false, dir: 'dist'
-                     sh 'ls -a'
+                     zip zipFile: 'distro-achieve-${env.BUILD_NUMBER}.zip', archive: false, dir: 'dist/'
+                     ls
                      uploadGithubReleaseAsset(
                         credentialId: 'GITHUB_TOKEN',
                         repository: 'immyemperor/waindesk-components',
                         tagName: 'v1.${env.BUILD_NUMBER}', 
                         uploadAssets: [
-                            [filePath: 'distro-achieve.zip']
+                            [filePath: 'distro-achieve-${env.BUILD_NUMBER}.zip']
                         ]
                     )
                 }
             }
         }
     }
-    post { 
-         always { 
-            cleanWs()
-        }
-    }
+    // post { 
+    //      always { 
+    //         cleanWs()
+    //     }
+    // }
 }
