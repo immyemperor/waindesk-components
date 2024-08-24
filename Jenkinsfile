@@ -4,7 +4,7 @@ pipeline {
         booleanParam(name: 'WITH_ADMIN_BUILD', defaultValue: true, description: '')
     }
 
-    tools {nodejs "nodejs"}
+    tools {nodejs "node22"}
 
     stages {
         stage('node setup') { 
