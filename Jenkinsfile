@@ -38,7 +38,7 @@ pipeline {
                 //sh "zip -r distro-achieve.zip /distro"
                 script{
                      zip zipFile: 'distro-achieve-${env.BUILD_NUMBER}.zip', archive: false, dir: 'dist/'
-                     ls
+                     sh "ls -a"
                      uploadGithubReleaseAsset(
                         credentialId: 'GITHUB_TOKEN',
                         repository: 'immyemperor/waindesk-components',
