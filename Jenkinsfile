@@ -8,7 +8,9 @@ pipeline {
 
     stages {
         stage('cleanning...') {
-            cleanWs()
+            steps {
+                cleanWs()
+            }
         }
         stage('node setup') { 
             steps {
