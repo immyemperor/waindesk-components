@@ -45,8 +45,8 @@ pipeline {
                         credentialId: 'GITHUB_TOKEN',
                         tag: "v1.${env.BUILD_NUMBER}",
                         repository: 'immyemperor/waindesk-components',
-                        bodyText:" v1.${env.BUILD_NUMBER} Release",
-                        )
+                        bodyText:" v1.${env.BUILD_NUMBER} Release"
+                    )
                     echo "uploading zip to github..."
                      uploadGithubReleaseAsset(
                         credentialId: 'GITHUB_TOKEN',
