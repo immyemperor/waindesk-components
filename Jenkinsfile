@@ -40,6 +40,13 @@ pipeline {
                      //sh "zip -r distro-achieve-${env.BUILD_NUMBER}.zip /dist"
                      zip zipFile: "distro-achieve-${env.BUILD_NUMBER}.zip", archive: false, dir: 'dist'
                      sh "ls -a"
+                     echo "releasing..."
+                     createGitHubRelease(
+                        credentialId: 'GITHUB_TOKEN',
+                        tag: "v1.${env.BUILD_NUMBER}",
+                        bodyText:" v1.${env.BUILD_NUMBER} Release",
+                        )
+                    echo "uploading zip to github..."
                      uploadGithubReleaseAsset(
                         credentialId: 'GITHUB_TOKEN',
                         repository: 'immyemperor/waindesk-components',
