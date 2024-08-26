@@ -37,7 +37,7 @@ pipeline {
                 // create zip
                 //sh "zip -r distro-achieve.zip /distro"
                 script{
-                     zip zipFile: 'distro-achieve-${env.BUILD_NUMBER}.zip', archive: false, dir: 'dist/'
+                     zip zipFile: 'distro-achieve-${env.BUILD_NUMBER}.zip', archive: false, dir: 'dist'
                      sh "ls -a"
                      uploadGithubReleaseAsset(
                         credentialId: 'GITHUB_TOKEN',
