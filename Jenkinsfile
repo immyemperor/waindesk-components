@@ -45,7 +45,7 @@ pipeline {
                         repository: 'immyemperor/waindesk-components',
                         tagName: "v1.${env.BUILD_NUMBER}", 
                         uploadAssets: [
-                            [filePath: "distro-achieve-${env.BUILD_NUMBER}.zip"]
+                            [filePath: "${env.WORKSPACE}/distro-achieve-${env.BUILD_NUMBER}.zip"]
                         ]
                     )
                 }
