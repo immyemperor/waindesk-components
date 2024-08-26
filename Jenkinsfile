@@ -38,14 +38,14 @@ pipeline {
                 //sh "zip -r distro-achieve.zip /distro"
                 script{
                      //sh "zip -r distro-achieve-${env.BUILD_NUMBER}.zip /dist"
-                     zip zipFile: 'distro-achieve-${env.BUILD_NUMBER}.zip', archive: false, dir: 'dist'
+                     zip zipFile: "distro-achieve-${env.BUILD_NUMBER}.zip", archive: false, dir: 'dist'
                      sh "ls -a"
                      uploadGithubReleaseAsset(
                         credentialId: 'GITHUB_TOKEN',
                         repository: 'immyemperor/waindesk-components',
-                        tagName: 'v1.${env.BUILD_NUMBER}', 
+                        tagName: "v1.${env.BUILD_NUMBER}", 
                         uploadAssets: [
-                            [filePath: 'distro-achieve-${env.BUILD_NUMBER}.zip']
+                            [filePath: "distro-achieve-${env.BUILD_NUMBER}.zip"]
                         ]
                     )
                 }
