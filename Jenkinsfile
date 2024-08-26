@@ -7,11 +7,6 @@ pipeline {
     tools {nodejs "node22"}
 
     stages {
-        stage('cleanning...') {
-            steps {
-                cleanWs()
-            }
-        }
         stage('node setup') { 
             steps {
                 sh 'npm install --force' 
