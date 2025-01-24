@@ -25,7 +25,7 @@ pipeline {
         } else {
         return []
         }'''])
-        stringParam(name: "BRANCH", , defaultValue:"", description:"Provide source branch name.")
+        string(name: "BRANCH", , defaultValue:"", description:"Provide source branch name.")
         }
 
     tools {nodejs "node22"}
