@@ -69,9 +69,9 @@ pipeline {
 
         stage('TEST') {
             agent {
-                    docker {
-                        image 'cypress/base:20.9.0'
-                    }
+                docker {
+                    image 'cypress/base:20.9.0'
+                }
             }
             steps{
                 git branch: params.BRANCH
