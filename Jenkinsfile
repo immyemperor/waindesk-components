@@ -67,14 +67,10 @@ pipeline {
             }
         }
 
-        stage('Initialize'){
-            def dockerHome = tool 'myDocker'
-                env.PATH = "${dockerHome}/bin:${env.PATH}"
-        }
-
         stage('TEST') {
             agent {
                 docker {
+                    label 'docker'
                     image 'cypress/base:20.9.0'
                 }
             }
