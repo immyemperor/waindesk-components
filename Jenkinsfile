@@ -17,8 +17,8 @@ pipeline {
 
     // }
     parameters {
-        activeChoice choiceType: 'PT_SINGLE_SELECT', filterLength: 1, filterable: false, name: 'BUILD_TOOL_TYPE', randomName: 'choice-parameter-5433428780321', script: groovyScript(fallbackScript: [classpath: [], oldScript: '', sandbox: true, script: 'return ["Error"]'], script: [classpath: [], oldScript: '', sandbox: true, script: 'return ["Standalone","CDO","e2e"]'])
-        reactiveChoice choiceType: 'PT_SINGLE_SELECT', filterLength: 1, filterable: false, name: 'WITH_ADMIN_BUILD', randomName: 'choice-parameter-5433435445568', referencedParameters: 'build type', script: groovyScript(fallbackScript: [classpath: [], oldScript: '', sandbox: true, script: 'return ["Error"]'], script: [classpath: [], oldScript: '', sandbox: true, script: 'return ["with Admin", "without Admin"]'])
+        activeChoice choiceType: 'PT_SINGLE_SELECT', filterLength: 1, filterable: false, name: 'BUILD_TOOL_TYPE', randomName: 'choice-parameter-5433428780321', script: groovyScript(fallbackScript: [classpath: [], oldScript: '', sandbox: true, script: 'return ["Error"]'], script: [classpath: [], oldScript: '', sandbox: true, script: 'return ["STANDALONE","CDO","E2E"]'])
+        reactiveChoice choiceType: 'PT_SINGLE_SELECT', filterLength: 1, filterable: false, name: 'WITH_ADMIN_BUILD', randomName: 'choice-parameter-5433435445568', referencedParameters: 'build type', script: groovyScript(fallbackScript: [classpath: [], oldScript: '', sandbox: true, script: 'return ["Error"]'], script: [classpath: [], oldScript: '', sandbox: true, script: 'return ["WITH ADMIN", "WITHOUT ADMIN"]'])
     }
 
     tools {nodejs "node22"}
@@ -32,7 +32,7 @@ pipeline {
         stage('build-with-admin'){
             when{
                 expression {
-                    return params.BUILD_TOOL_TYPE == "STANDALONE" && params.WITH_ADMIN_BUILD == "with Admin";
+                    return params.BUILD_TOOL_TYPE == "STANDALONE" && params.WITH_ADMIN_BUILD == "WITH ADMIN";
                 }
             }
             steps{
@@ -42,7 +42,7 @@ pipeline {
         stage('build-without-admin'){
             when{
                 expression {
-                    return params.BUILD_TOOL_TYPE == "STANDALONE" && params.WITH_ADMIN_BUILD == "without Admin";
+                    return params.BUILD_TOOL_TYPE == "STANDALONE" && params.WITH_ADMIN_BUILD == "WITHOUT ADMIN";
                 }
             }
             steps{
@@ -68,22 +68,22 @@ pipeline {
                      zip zipFile: "distro-achieve-${env.BUILD_NUMBER}.zip", archive: false, dir: 'dist'
                      sh "ls -a"
                      echo "releasing..."
-                     createGitHubRelease(
-                        credentialId: 'GITHUB_TOKEN',
-                        tag: "v1.${env.BUILD_NUMBER}",
-                        repository: 'immyemperor/waindesk-components',
-                        bodyText:" v1.${env.BUILD_NUMBER} Release",
-                        commitish: "${env.GIT_COMMIT}"
-                    )
-                    echo "uploading zip to github..."
-                     uploadGithubReleaseAsset(
-                        credentialId: 'GITHUB_TOKEN',
-                        repository: 'immyemperor/waindesk-components',
-                        tagName: "v1.${env.BUILD_NUMBER}", 
-                        uploadAssets: [
-                            [filePath: "${env.WORKSPACE}/distro-achieve-${env.BUILD_NUMBER}.zip"]
-                        ]
-                    )
+                    //  createGitHubRelease(
+                    //     credentialId: 'GITHUB_TOKEN',
+                    //     tag: "v1.${env.BUILD_NUMBER}",
+                    //     repository: 'immyemperor/waindesk-components',
+                    //     bodyText:" v1.${env.BUILD_NUMBER} Release",
+                    //     commitish: "${env.GIT_COMMIT}"
+                    // )
+                    // echo "uploading zip to github..."
+                    //  uploadGithubReleaseAsset(
+                    //     credentialId: 'GITHUB_TOKEN',
+                    //     repository: 'immyemperor/waindesk-components',
+                    //     tagName: "v1.${env.BUILD_NUMBER}", 
+                    //     uploadAssets: [
+                    //         [filePath: "${env.WORKSPACE}/distro-achieve-${env.BUILD_NUMBER}.zip"]
+                    //     ]
+                    // )
                 }
             }
         }
