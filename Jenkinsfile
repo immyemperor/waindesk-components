@@ -74,7 +74,9 @@ pipeline {
                 }
             }
             steps{
-                git branch: params.BRANCH
+                git branch: env.GIT_BRANCH,
+                url: env.GIT_URL
+
                 sh 'npm run cy:ci'
             }
         }
