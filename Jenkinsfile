@@ -1,7 +1,7 @@
 pipeline {
     agent any
     parameters {
-        choice(name:"BUILD_TOOL_TYPE" choices: ["STANDALONE", "CDO", "E2E"])
+        choice(name:"BUILD_TOOL_TYPE", choices: ["STANDALONE", "CDO", "E2E"])
         stringParam(name: 'BRANCH', defaultValue: true, description: '')
         switch(params.BUILD_TOOL_TYPE) {
             case "CDO":
