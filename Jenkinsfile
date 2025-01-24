@@ -17,7 +17,7 @@ pipeline {
 
     // }
     parameters {
-        activeChoice choiceType: 'PT_SINGLE_SELECT', filterLength: 1, filterable: false, name: 'BUILD_TOOL_TYPE', randomName: 'choice-parameter-6799996665951', script: groovyScript(fallbackScript: [classpath: [], oldScript: '', sandbox: true, script: 'return ["SCRIPT ERROR !!!"]'], script: [classpath: [], oldScript: '', sandbox: true, script: 'return ["STANDALONE","CDO","E2E"]'])
+        activeChoice choiceType: 'PT_SINGLE_SELECT', filterLength: 1, filterable: false, name: 'Builder', randomName: 'choice-parameter-6799996665951', script: groovyScript(fallbackScript: [classpath: [], oldScript: '', sandbox: true, script: 'return ["SCRIPT ERROR !!!"]'], script: [classpath: [], oldScript: '', sandbox: true, script: 'return ["STANDALONE","CDO","E2E"]'])
         reactiveChoice choiceType: 'PT_SINGLE_SELECT', filterLength: 1, filterable: false, name: 'WITH_ADMIN_BUILD', randomName: 'choice-parameter-6799999538275', referencedParameters: 'Builder', script: groovyScript(fallbackScript: [classpath: [], oldScript: '', sandbox: true, script: 'return ["SCRIPT ERROR !!!"]'], script: [classpath: [], oldScript: '', sandbox: true, script: '''if(Builder.equals("STANDALONE")) {
         return ["WITH ADMIN","WITHOUT ADMIN"]
         } else if (Builder.equals("CDO")) {
@@ -38,7 +38,7 @@ pipeline {
         stage('build-with-admin'){
             when{
                 expression {
-                    return params.BUILD_TOOL_TYPE == "STANDALONE" && params.WITH_ADMIN_BUILD == "WITH ADMIN";
+                    return params.Builder == "STANDALONE" && params.WITH_ADMIN_BUILD == "WITH ADMIN";
                 }
             }
             steps{
@@ -48,7 +48,7 @@ pipeline {
         stage('build-without-admin'){
             when{
                 expression {
-                    return params.BUILD_TOOL_TYPE == "STANDALONE" && params.WITH_ADMIN_BUILD == "WITHOUT ADMIN";
+                    return params.Builder == "STANDALONE" && params.WITH_ADMIN_BUILD == "WITHOUT ADMIN";
                 }
             }
             steps{
@@ -58,7 +58,7 @@ pipeline {
         stage('cdo-build'){
             when{
                 expression {
-                    return params.BUILD_TOOL_TYPE == "CDO";
+                    return params.Builder == "CDO";
                 }
             }
             steps{
