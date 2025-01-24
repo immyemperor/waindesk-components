@@ -1,20 +1,24 @@
 pipeline {
     agent any
-    parameters {
-        choice(name:"BUILD_TOOL_TYPE", choices: ["STANDALONE", "CDO", "E2E"])
-        string(name: 'BRANCH', defaultValue: true, description: '')
-        switch(params.BUILD_TOOL_TYPE) {
-            case "CDO":
-                return booleanParam(name: 'CDO_BUILD', defaultValue: true, description: '') 
-            break
-            case "STANDALONE":
-                return booleanParam(name: 'WITH_ADMIN_BUILD', defaultValue: true, description: '')
-            break
-            case "E2E":
-                return booleanParam(name: 'E2E', defaultValue: true, description: '')
-            break
-        }        
+    // parameters {
+    //     choice(name:"BUILD_TOOL_TYPE", choices: ["STANDALONE", "CDO", "E2E"])
+    //     string(name: 'BRANCH', defaultValue: true, description: '')
+    //     switch(params.BUILD_TOOL_TYPE) {
+    //         case "CDO":
+    //             return booleanParam(name: 'CDO_BUILD', defaultValue: true, description: '') 
+    //         break
+    //         case "STANDALONE":
+    //             return booleanParam(name: 'WITH_ADMIN_BUILD', defaultValue: true, description: '')
+    //         break
+    //         case "E2E":
+    //             return booleanParam(name: 'E2E', defaultValue: true, description: '')
+    //         break
+    //     }        
 
+    // }
+    parameters {
+        activeChoice choiceType: 'PT_SINGLE_SELECT', filterLength: 1, filterable: false, name: 'BUILD_TOOL_TYPE', randomName: 'choice-parameter-5433428780321', script: groovyScript(fallbackScript: [classpath: [], oldScript: '', sandbox: true, script: 'return ["Error"]'], script: [classpath: [], oldScript: '', sandbox: true, script: 'return ["Standalone","CDO","e2e"]'])
+        reactiveChoice choiceType: 'PT_SINGLE_SELECT', filterLength: 1, filterable: false, name: 'WITH_ADMIN_BUILD', randomName: 'choice-parameter-5433435445568', referencedParameters: 'build type', script: groovyScript(fallbackScript: [classpath: [], oldScript: '', sandbox: true, script: 'return ["Error"]'], script: [classpath: [], oldScript: '', sandbox: true, script: 'return ["with Admin", "without Admin"]'])
     }
 
     tools {nodejs "node22"}
@@ -28,7 +32,7 @@ pipeline {
         stage('build-with-admin'){
             when{
                 expression {
-                    return params.BUILD_TOOL_TYPE == "STANDALONE" && params.WITH_ADMIN_BUILD;
+                    return params.BUILD_TOOL_TYPE == "STANDALONE" && params.WITH_ADMIN_BUILD == "with Admin";
                 }
             }
             steps{
@@ -38,7 +42,7 @@ pipeline {
         stage('build-without-admin'){
             when{
                 expression {
-                    return params.BUILD_TOOL_TYPE == "STANDALONE" && !params.WITH_ADMIN_BUILD;
+                    return params.BUILD_TOOL_TYPE == "STANDALONE" && params.WITH_ADMIN_BUILD == "without Admin";
                 }
             }
             steps{
@@ -48,7 +52,7 @@ pipeline {
         stage('cdo-build'){
             when{
                 expression {
-                    return params.BUILD_TOOL_TYPE == "CDO" && params.WITH_ADMIN_BUILD;
+                    return params.BUILD_TOOL_TYPE == "CDO";
                 }
             }
             steps{
