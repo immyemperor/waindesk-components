@@ -1,0 +1,11 @@
+.btn{
+    background-color: $base-color;
+    border: 1px transparent;
+    border-radius: 3px;
+    padding:5px;
+    
+}
+.btn:hover {
+    background-color: $base-btn-color;
+    color: aqua;
+}

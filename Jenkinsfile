@@ -1,7 +1,20 @@
 pipeline {
     agent any
     parameters {
-        booleanParam(name: 'WITH_ADMIN_BUILD', defaultValue: true, description: '')
+        choice(name:"BUILD_TOOL_TYPE": choices: ["STANDALONE", "CDO", "E2E"])
+        stringParam(name: 'BRANCH', defaultValue: true, description: '')
+        switch(params.BUILD_TOOL_TYPE) {
+            case "CDO":
+                return booleanParam(name: 'CDO_BUILD', defaultValue: true, description: '') 
+            break
+            case "STANDALONE":
+                return booleanParam(name: 'WITH_ADMIN_BUILD', defaultValue: true, description: '')
+            break
+            case "E2E":
+                return booleanParam(name: 'E2E', defaultValue: true, description: '')
+            break
+        }        
+
     }
 
     tools {nodejs "node22"}
@@ -15,7 +28,7 @@ pipeline {
         stage('build-with-admin'){
             when{
                 expression {
-                    return params.WITH_ADMIN_BUILD;
+                    return params.BUILD_TOOL_TYPE == "STANDALONE" && params.WITH_ADMIN_BUILD;
                 }
             }
             steps{
@@ -25,11 +38,21 @@ pipeline {
         stage('build-without-admin'){
             when{
                 expression {
-                    return !params.WITH_ADMIN_BUILD;
+                    return params.BUILD_TOOL_TYPE == "STANDALONE" && !params.WITH_ADMIN_BUILD;
                 }
             }
             steps{
                 sh 'npm run build --prod -c=no-admin'
+            }
+        }
+        stage('cdo-build'){
+            when{
+                expression {
+                    return params.BUILD_TOOL_TYPE == "CDO" && params.WITH_ADMIN_BUILD;
+                }
+            }
+            steps{
+                sh 'npm run build-admin'
             }
         }
         stage("archive distro"){
