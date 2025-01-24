@@ -25,6 +25,7 @@ pipeline {
         } else {
         return []
         }'''])
+        stringParam(name: "BRANCH", , defaultValue:"", description:"Provide source branch name.")
         }
 
     tools {nodejs "node22"}
@@ -65,6 +66,19 @@ pipeline {
                 sh 'npm run build-admin'
             }
         }
+
+        stage('TEST') {
+            agent {
+                    docker {
+                        image 'cypress/base:20.9.0'
+                    }
+            }
+            steps{
+                git branch: params.BRANCH
+                sh 'npm run cy:ci'
+            }
+        }
+
         stage("archive distro"){
             steps{
                 // create zip
